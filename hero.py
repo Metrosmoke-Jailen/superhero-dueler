@@ -1,5 +1,7 @@
 from ability import Ability
 from armor import Armor
+from weapon import Weapon
+
 
 class Hero:
     def __init__(self, name, starting_health=100):
@@ -23,6 +25,10 @@ class Hero:
     def add_armor(self, armor):
         '''Add armor to self.armors'''
         self.armors.append(armor)
+
+    def add_weapon(self, weapon):
+        '''Add weapon to self.abilities'''
+        self.abilities.append(weapon)
 
     def attack(self):
         '''Calculate total damage from all abilities'''
@@ -98,3 +104,9 @@ if __name__ == "__main__":
     hero2.add_ability(ability4)
 
     hero1.fight(hero2)
+
+    hero = Hero("Wonder Woman")
+    weapon = Weapon("Lasso of Truth", 90)
+
+    hero.add_weapon(weapon)
+    print(hero.attack())
