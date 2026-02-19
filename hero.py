@@ -4,19 +4,14 @@ from weapon import Weapon
 
 
 class Hero:
-    def __init__(self, name, starting_health=100):
-        '''Instance properties:
-            abilities: List
-            armors: List
-            name: String
-            starting_health: Integer
-            current_health: Integer
-        '''
+    def __init__(self, name, health=100):
+        self.name = name
+        self.starting_health = health
+        self.current_health = health
         self.abilities = []
         self.armors = []
-        self.name = name
-        self.starting_health = starting_health
-        self.current_health = starting_health
+        self.deaths = 0
+        self.kills = 0
 
     def add_ability(self, ability):
         '''Add ability to abilities list'''
@@ -29,6 +24,10 @@ class Hero:
     def add_weapon(self, weapon):
         '''Add weapon to self.abilities'''
         self.abilities.append(weapon)
+
+    def add_kill(self, num_kills):
+        ''' Update self.kills by num_kills amount'''
+        self.kills += num_kills
 
     def attack(self):
         '''Calculate total damage from all abilities'''
@@ -58,35 +57,26 @@ class Hero:
         return self.current_health > 0
 
     def fight(self, opponent):
-        '''Fight opponent until someone wins or draw'''
+        '''Battle another hero until one or both are defeated'''
 
-        # 0) Check if neither hero has abilities
-        if not self.abilities and not opponent.abilities:
-            print("Draw")
-            return
+        if self.abilities == [] and opponent.abilities == []:
+            print("Draw! Both heroes have no abilities.")
+        return
 
-        # 1) Fight loop
-        while self.is_alive() and opponent.is_alive():
+        while self.current_health > 0 and opponent.current_health > 0:
+            opponent.take_damage(self.attack())
+        self.take_damage(opponent.attack())
 
-            # Each hero calculates attack first
-            self_damage = self.attack()
-            opponent_damage = opponent.attack()
-
-            # Apply damage
-            opponent.take_damage(self_damage)
-            self.take_damage(opponent_damage)
-
-            # 3) Check outcomes
-            if not self.is_alive() and not opponent.is_alive():
-                print("Draw")
-                return
-            elif not opponent.is_alive():
-                print(f"{self.name} won!")
-                return
-            elif not self.is_alive():
-                print(f"{opponent.name} won!")
-                return
-
+        if self.current_health > 0:
+            self.add_kill(1)
+            opponent.add_death(1)
+        elif opponent.current_health > 0:
+            opponent.add_kill(1)
+            self.add_death(1)
+        else:
+            # both died
+            self.add_death(1)
+            opponent.add_death(1)
 
 if __name__ == "__main__":
 
