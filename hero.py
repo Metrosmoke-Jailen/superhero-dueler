@@ -28,6 +28,10 @@ class Hero:
     def add_kill(self, num_kills):
         ''' Update self.kills by num_kills amount'''
         self.kills += num_kills
+    
+    def add_death(self, num_deaths):
+        '''Update deaths with num_deaths'''
+        self.deaths += num_deaths
 
     def attack(self):
         '''Calculate total damage from all abilities'''
