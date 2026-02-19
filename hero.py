@@ -61,11 +61,11 @@ class Hero:
 
         if self.abilities == [] and opponent.abilities == []:
             print("Draw! Both heroes have no abilities.")
-        return
+            return
 
         while self.current_health > 0 and opponent.current_health > 0:
             opponent.take_damage(self.attack())
-        self.take_damage(opponent.attack())
+            self.take_damage(opponent.attack())
 
         if self.current_health > 0:
             self.add_kill(1)
